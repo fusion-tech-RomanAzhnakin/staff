@@ -1,0 +1,51 @@
+
+<head>
+  <meta charset="utf-8">
+  <title>The HTML5 Herald</title>
+
+  <meta name="description" content="The HTML5 Herald">
+  <meta name="author" content="SitePoint">
+
+  <link rel="stylesheet" href="{{styles}}">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900,900i&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,500&display=swap" rel="stylesheet">
+  {{> portfolio_mainPage.Styles.hbs}}
+</head>
+  <script src="https://kit.fontawesome.com/928cf7c79e.js"></script>
+
+  {{#each projects}}
+  <div class="information-container landscape">
+    <div class="information-container-logo-container">
+      <img src={{../images.white}} class="small-logo" />
+    </div>
+    <div class="preview">
+      {{#if images}}
+      <div class="project-preview-image">
+        <img src={{images}} alt="It's backend App">
+      </div>
+      {{/if}}
+      <div class="tecnologies-container">
+        <h6 class="technology-title">technology:</h6>
+        <ul class="technologies-list">
+          {{#each technologies}}
+          <li class="technologies-list__item">
+            <p class="technologies-list__item_text">{{title}}</p>
+          </li>
+          {{/each}}
+        </ul>
+      </div>
+    </div>
+    <div class="text-container">
+      <h4 class="text-container-project-title">{{title}}</h4>
+      <p class="abstract-text">{{createStringList description}}</p>
+      <p class="abstract-text">{{createStringList description_ru}}</p>
+      <div class="title-with-devider-container">
+        <h6 class="title-before-devider">what we’ve done</h6>
+        <div class="header-gradient-devider"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pagebreak"></div>
+  {{/each}}

@@ -1,0 +1,21 @@
+Deploy:
+  stage: deploy
+  only:
+    - dev
+    - stage
+  script:
+   - 'which ssh-agent || ( apk update && apk add openssh-client git )'
+   - eval $(ssh-agent -s)
+   - echo "$HOST"
+   - echo "$PORT"
+   - echo "$STAGE_PRIVATE_KEY"
+   - echo "$STAGE_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+
+   - mkdir -p ~/.ssh
+   - chmod 700 ~/.ssh
+
+   - ssh-keyscan -p $PORT $HOST >> ~/.ssh/known_hosts
+   - chmod 644 ~/.ssh/known_hosts
+
+   - ssh -p $PORT ubuntu@$HOST "cd ~/internal-apps/server && . ~/.nvm/nvm.sh && git pull && npm i && npm run migrate && pm2 restart ecosystem.config.js --env stage"
+   

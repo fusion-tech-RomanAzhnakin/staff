@@ -1,0 +1,4 @@
+module.exports = {
+  GET_APPEND_MESSAGE_BY_ID: 'GET_APPEND_MESSAGE_BY_ID',
+  PUT_MESSAGE: 'PUT_MESSAGE',
+};

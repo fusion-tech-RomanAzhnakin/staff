@@ -1,0 +1,52 @@
+{
+  "en": {
+    "info__soft_skills": "SOFT SKILLS",
+    "info__education": "EDUCATION",
+    "info__experience": "EXPERIENCE",
+    "info__projects": "PROJECTS",
+    "project__role_responsibilities": "Role/Responsibilities",
+    "employeePosition": {
+      "developer": {
+        "header__specialty": "DEVELOPER",
+        "info__techs": "HARD SKILLS"
+      },
+      "designer": {
+        "header__specialty": "DESIGNER",
+        "info__techs": "TOOLS"
+      },
+      "qa": {
+        "header__specialty": "QA ENGINEER",
+        "info__techs": "HARD SKILLS"
+      },
+      "pm": {
+        "header__specialty": "PROJECT MANAGER",
+        "info__techs": "HARD SKILLS"
+      }
+    }
+  },
+  "ru": {
+    "info__soft_skills": "ДОПОЛНИТЕЛЬНЫЕ НАВЫКИ",
+    "info__education": "ОБРАЗОВАНИЕ",
+    "info__experience": "ОПЫТ",
+    "info__projects": "ПРОЕКТЫ",
+    "project__role_responsibilities": "Роль/Зона ответственности",
+    "employeePosition": {
+      "developer": {
+        "header__specialty": "РАЗРАБОТЧИК",
+        "info__techs": "ОСНОВНЫЕ НАВЫКИ"
+      },
+      "designer": {
+        "header__specialty": "ДИЗАЙНЕР",
+        "info__techs": "ИНСТРУМЕНТЫ"
+      },
+      "qa": {
+        "header__specialty": "QA ИНЖЕНЕР",
+        "info__techs": "ОСНОВНЫЕ НАВЫКИ"
+      },
+      "pm": {
+        "header__specialty": "МЕНЕДЖЕР ПРОЕКТОВ",
+        "info__techs": "ОСНОВНЫЕ НАВЫКИ"
+      }
+    }
+  }
+}

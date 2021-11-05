@@ -1,0 +1,174 @@
+{
+  "groups": [
+    {
+      "title": "Фронтовые штуки",
+      "sections": [
+        {
+          "title": "DOM, browser API, jQuery",
+          "skills": [
+            {
+              "title": "Владеет основными конструкциями языка и базовыми концепциями в браузере",
+              "description": "Skill Description",
+              "level": "junior"
+            },
+            {
+              "title": "DOM",
+              "description": "Skill Description",
+              "level": "junior"
+            },
+            {
+              "title": "Браузерные события",
+              "description": "Skill Description",
+              "level": "middle"
+            },
+            {
+              "title": "Работа с хранилищами",
+              "description": "Skill Description",
+              "level": "middle"
+            }
+          ]
+        },
+        {
+          "title": "React",
+          "skills": [
+            {
+              "title": "Знает базовые концепции, может суппортить проект или создать небольшой свой",
+              "description": "Skill Description",
+              "level": "junior"
+            },
+            {
+              "title": "Основы React",
+              "description": "Skill Description",
+              "level": "junior"
+            },
+            {
+              "title": "Работа с сетью в React приложениях",
+              "description": "Skill Description",
+              "level": "junior"
+            },
+            {
+              "title": "High order component",
+              "description": "Skill Description",
+              "level": "middle"
+            },
+            {
+              "title": "Работа с сетью в React приложениях",
+              "description": "Skill Description",
+              "level": "middle"
+            },
+            {
+              "title": "Написание собственных хуков",
+              "description": "Skill Description",
+              "level": "senior"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Бэк",
+      "sections": [
+        {
+          "title": "Nodejs",
+          "skills": [
+            {
+              "title": "Основы фрэймворка",
+              "description": "Skill Description",
+              "level": "junior"
+            },
+            {
+              "title": "Что такое callback-hell и как с ним бороться?",
+              "description": "Skill Description",
+              "level": "junior"
+            },
+            {
+              "title": "Как установить несколько версий nodejs в одной системе?",
+              "description": "Skill Description",
+              "level": "junior"
+            },
+            {
+              "title": "Может написать сервер без express, koa, etc?",
+              "description": "Skill Description",
+              "level": "middle"
+            },
+            {
+              "title": "Что такое error-first колбэки?",
+              "description": "Skill Description",
+              "level": "middle"
+            },
+            {
+              "title": "FS module",
+              "description": "Skill Description",
+              "level": "middle"
+            },
+            {
+              "title": "Как устроен event-loop? Объяснить по с примером",
+              "description": "Skill Description",
+              "level": "senior"
+            },
+            {
+              "title": "Что такое libuv?",
+              "description": "Skill Description",
+              "level": "senior"
+            },
+            {
+              "title": "глобальная переменная process",
+              "description": "Skill Description",
+              "level": "senior"
+            }
+          ]
+        },
+        {
+          "title": "NoSQL",
+          "skills": [
+            {
+              "title": "Что такое NoSQL?",
+              "description": "Skill Description",
+              "level": "junior"
+            },
+            {
+              "title": "Что такое mongodb?",
+              "description": "Skill Description",
+              "level": "junior"
+            },
+            {
+              "title": "Как строятся запросы?",
+              "description": "Skill Description",
+              "level": "junior"
+            },
+            {
+              "title": "Устройство БД",
+              "description": "Skill Description",
+              "level": "junior"
+            },
+            {
+              "title": "Как устроена индексация",
+              "description": "Skill Description",
+              "level": "middle"
+            },
+            {
+              "title": "AWS Dynamo, Firebase database/firestore.",
+              "description": "Skill Description",
+              "level": "senior"
+            },
+            {
+              "title": "Масшабирование",
+              "description": "Skill Description",
+              "level": "senior"
+            },
+            {
+              "title": "Шардирование",
+              "description": "Skill Description",
+              "level": "senior"
+            },
+            {
+              "title": "знать где и как можно развернуть кластер серверов в облаке (AWS)",
+              "description": "Skill Description",
+              "level": "senior"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

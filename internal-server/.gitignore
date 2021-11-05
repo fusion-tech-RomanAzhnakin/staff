@@ -1,0 +1,12 @@
+/.vscode
+/.idea
+*/.DS_Store
+node_modules
+public/uploads/*
+config/local.config
+config/config.json
+yarn.lock
+.history/
+calendar.json
+.DS_Store
+dump_fusion_staff_*.sql

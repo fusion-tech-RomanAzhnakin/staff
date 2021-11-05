@@ -1,0 +1,55 @@
+{
+  "port": 4000,
+  "timezone": "Europe/Moscow",
+  "slackBot": {
+    "slackBotIconPath": "/public/static/debug_slack.png",
+    "slackbotUsername": "Fusion Test Bot",
+    "slackToken": "get from your admin",
+    "slackMessages": {
+      "newAnnouncement": []
+    }
+  },
+  "externalApi": {
+    "vapidPrivateKey": "generate using webpush.generateVAPIDKeys and save here",
+    "vapidPublicKey": "generate using webpush.generateVAPIDKeys and save here",
+    "vapidMail": "some@mail.com"
+  },
+  "db": {
+    "username": "postgres",
+    "password": "password",
+    "database": "staff_docker",
+    "host": "127.0.0.1",
+    "port": 5432,
+    "dialect": "postgres",
+    "logging": false
+  },
+  "token": {
+    "secret": "Enter your secret here",
+    "accessExpires": "1 days",
+    "refreshExpires": "1 days"
+  },
+  "hash": {
+    "type": "md5",
+    "key": "Enter your key here"
+  },
+  "urls": {
+    "current": "http://localhost:4000",
+    "staff": "http://localhost:3000",
+    "staffOld": "http://localhost:4001",
+    "crm": "http://localhost:3001"
+  },
+  "linkpreview": {
+    "linkPreviewUrl": "http://api.linkpreview.net",
+    "linkPreviewApiKey": "Go to 'https://my.linkpreview.net', register and enter your api key here."
+  },
+  "mail": {
+    "address": "your@email.com",
+    "password": "your password",
+    "service": "gmail"
+  },
+  "image": {
+    "maxSize": 3100000,
+    "quality": 70,
+    "quantity": 5
+  }
+}
