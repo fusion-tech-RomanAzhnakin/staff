@@ -33,6 +33,7 @@ export default styled(MainPageContent)`
 
   .buttonClearFilter {
     margin: 8px;
+    justify-content: flex-end;
   }
 
   @media (max-width: 480px) {

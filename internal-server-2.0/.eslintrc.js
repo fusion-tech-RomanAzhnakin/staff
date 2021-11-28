@@ -15,6 +15,7 @@ module.exports = {
   },
   rules: {
     'eol-last': ['error', 'always'],
+    'linebreak-style': 0,
     semi: ['error', 'always'],
     'no-plusplus': 'off',
     'operator-linebreak': ['error', 'after', { overrides: { '?': 'before', ':': 'before' } }],

@@ -10,38 +10,39 @@ const SearchBuilder = require('../../utils/SearchBuilder');
  * description_ru: string,
  * status: string,
  * role: Array<JSON>,
- * user: Array<number>,
- * technologies: Array<number>,
+ * user_id: Array<number>,
+ * technologies_id: Array<number>,
  * }} data
  */
 const create = async (data) => {
-  const roles = JSON.parse(data.role);
-  data.role = roles;
-  const newProject = await db.project.create(data);
-  await newProject.setTechnologies(data.technologies_id);
-  await newProject.setUser(data.user_id);
+  const resultData = { ...data };
+  const roles = JSON.parse(resultData.role);
+  resultData.role = roles;
+  const newProject = await db.project.create(resultData);
+  await newProject.setTechnologies(resultData.technologies_id);
+  await newProject.setUser(resultData.user_id);
   return newProject.toJSON();
 };
 
 /**
  * @param {{
-    pagination: {
-      perPage: number;
-      page: number;
-      limit: number
-      offset: number
-    };
-    sort: {
-      sortBy: string;
-      sortDirection: "straight" | "reverse";
-    };
-    filter: {
-    };
-    include: Array<{
-      model: string,
-      as: string,
-      attributes: Array<string>
-    }>
+ *   pagination: {
+ *    perPage: number;
+ *     page: number;
+ *     limit: number
+ *     offset: number
+ *   };
+ *   sort: {
+ *     sortBy: string;
+ *     sortDirection: "straight" | "reverse";
+ *   };
+ *   filter: {
+ *   };
+ *   include: Array<{
+ *     model: string,
+ *     as: string,
+ *     attributes: Array<string>
+ *   }>
  * }} options
  */
 
@@ -58,11 +59,30 @@ const getList = async (options) => {
 
   const projects = await db.project.findAll({
     ...query,
-    // include,
   });
 
   const rows = await db.project.count();
   return { data: projects };
+};
+
+const getTech = async (options) => {
+  const query = new SearchBuilder({
+    // pagination: options.pagination,
+    // sort: options.sort,
+    // filter: options.filter,
+    include: options.include,
+  }).buildQuery();
+
+  // query.order.push([{ model: db.user, as: 'user' }, 'id']);
+  // query.order.push([{ model: db.technologies, as: 'technologies' }, 'title']);
+
+  const tech = await db.techGroup.findAll({
+    ...query,
+    // include,
+  });
+
+  // const rows = await db.project.count();
+  return { data: tech };
 };
 
 /**
@@ -82,15 +102,16 @@ const getList = async (options) => {
 
 const edit = async (data) => {
   const roles = JSON.parse(data.role);
-  data.role = roles;
+  const resultData = { ...data };
+  resultData.role = roles;
   await db.project.update({
-    title: data.title,
-    href: data.href,
-    description: data.description,
-    description_ru: data.description_ru,
-    role: data.role,
+    title: resultData.title,
+    href: resultData.href,
+    description: resultData.description,
+    description_ru: resultData.description_ru,
+    role: resultData.role,
   }, {
-    where: { id: data.id },
+    where: { id: resultData.id },
   });
   const editProject = await db.project.findOne({
     where: { id: data.id },
@@ -110,4 +131,5 @@ module.exports = {
   getList,
   edit,
   deleteProject,
+  getTech,
 };

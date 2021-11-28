@@ -1,5 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { toggleLoader } from 'store/main';
+import ReactQuill from 'react-quill';
 
 import _ from 'lodash';
 
@@ -18,11 +22,13 @@ import Button from '@material-ui/core/Button';
 
 import CustomPagination from 'ui/components/Pagination/Pagination';
 
+import { defaultErrorMessage } from 'utils/constants';
+import projectApi from 'api/projectApi';
 import useDebouncedFunction from 'utils/hooks/useDebouncedFunction';
 import { getFullName } from 'utils/utils';
 import { arrayToItems } from 'utils/arraysToComponents';
 import { getProjects } from '../store/thunks';
-import { updateSort } from '../store/reducer';
+import { updateSort, setProjects } from '../store/reducer';
 
 const getRowsFromData = (columns, data) => {
   if (!Array.isArray(data)) {
@@ -32,8 +38,9 @@ const getRowsFromData = (columns, data) => {
 };
 
 const ProjectsList = () => {
+  const history = useHistory();
   const [open, setOpen] = useState(false);
-  const [indexProject, setIndexProject] = useState();
+  const [indexProject, setIndexProject] = useState(0);
   const handleOpen = (rowIndex) => { setIndexProject(rowIndex); setOpen(true); };
   const handleClose = () => setOpen(false);
   const dispatch = useDispatch();
@@ -61,16 +68,16 @@ const ProjectsList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, sortBy, sortDirection, filters]);
 
-  const paginationSet = useMemo(() => {
-    return {
-      ...pagination,
-      onChange: (event, page) => dispatch(getProjects(
-        {
-          pagination: { ...pagination, page },
-        },
-      )),
-    };
-  }, [pagination, dispatch]);
+  // const paginationSet = useMemo(() => {
+  //   return {
+  //     ...pagination,
+  //     onChange: (event, page) => dispatch(getProjects(
+  //       {
+  //         pagination: { ...pagination, page },
+  //       },
+  //     )),
+  //   };
+  // }, [pagination, dispatch]);
 
   const data = useMemo(() => {
     if (_.isEmpty(projectsList)) {
@@ -98,41 +105,64 @@ const ProjectsList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [columns, data]);
 
-  // const handleProject = (projectItem) => {
-  //   // event.preventDefault();
-  //   console.log(projectItem);
-  // };
+  const handleEditProject = () => {
+    history.push({ pathname: 'edit-project', state: indexProject });
+  };
+
+  const handleDeleteProject = async () => {
+    try {
+      dispatch(toggleLoader(true));
+      await projectApi.deleteProject(projectsList[indexProject].id);
+      const newList = [...projectsList];
+      newList.splice(indexProject, 1);
+      dispatch(setProjects(newList));
+      handleClose();
+      toast.success('Успех! Проект удален');
+    } catch (err) {
+      toast.error(defaultErrorMessage);
+    } finally {
+      dispatch(toggleLoader(false));
+    }
+  };
 
   return (
     <>
       <Modal
         open={open}
         onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        // aria-labelledby="modal-modal-title"
+        // aria-describedby="modal-modal-description"
       >
         <Box className='modalTechnologies' sx={style} >
           <Typography id="modal-modal-title" variant="h1" component="h2">
-            {projectsList[indexProject].title}
+            {projectsList.length && projectsList[indexProject].title}
           </Typography>
-          <Typography id="modal-modal-title" variant="h3" component="h3">
-           {projectsList[indexProject].description}
-          </Typography>
-          <Grid>
+          {/* <Typography id="modal-modal-title" variant="h3" component="h3">
+            {projectsList.length && projectsList[indexProject].description}
+          </Typography> */}
+          <ReactQuill
+            name="description"
+            readOnly={true}
+            hideToolbar={true}
+            label="Описание:"
+            modules={ { toolbar: false } }
+            value={projectsList.length && projectsList[indexProject].description}
+          />
+          <Grid className='buttonModal' >
             <Button
-                  variant="outlined"
-                  color="primary"
-                  // onClick={editProject}
-                >
-                  Редактировать
+              variant="outlined"
+              color="primary"
+              onClick={handleEditProject}
+            >
+              Редактировать
             </Button>
 
             <Button
-                  variant="outlined"
-                  color="primary"
-                  // onClick={deleteProject}
-                >
-                  Удалить
+              variant="outlined"
+              color="primary"
+              onClick={handleDeleteProject}
+            >
+              Удалить
             </Button>
           </Grid>
         </Box>

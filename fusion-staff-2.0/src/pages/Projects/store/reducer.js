@@ -15,6 +15,7 @@ const getInitialStore = () => {
     sortBy: 'title',
     sortDirection: params.direction || 'straight',
     pagination: { page: 1, perPage: 25 },
+    groupsTech: [],
     filters: {
       search: params.search || '',
       technologies: params.technologies ? params.technologies.split(',').map(Number) : null,
@@ -27,6 +28,9 @@ const ProjectSlice = createSlice({
   name: 'projects',
   initialState: getInitialStore(),
   reducers: {
+    setGroupsTech: (store, { payload }) => ({
+      ...store, groupsTech: payload,
+    }),
     setProjects: (store, { payload }) => ({
       ...store,
       projectsList: payload,
@@ -66,7 +70,8 @@ const ProjectSlice = createSlice({
   },
 });
 
-export const { setProjects,
+export const { setGroupsTech,
+  setProjects,
   setFilters,
   clearFilter,
   updateFilterField,

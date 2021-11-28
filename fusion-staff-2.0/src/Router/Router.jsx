@@ -20,6 +20,7 @@ const Requests = lazyWrapper(lazy(() => import('pages/Requests')));
 const PortfolioBuilder = lazyWrapper(lazy(() => import('pages/documents/PortfolioBuilder')));
 const Projects = lazyWrapper(lazy(() => import('pages/Projects')));
 const CreateProject = lazyWrapper(lazy(() => import('pages/Projects/CreateProject')));
+// const EditProject = lazyWrapper(lazy(() => import('pages/Projects/EditProject')));
 
 const Router = () => {
   const user = useSelector(({ main }) => main.user);
@@ -93,6 +94,12 @@ const routes = [
     path: routePaths.sales.createProject,
     component: CreateProject,
     pageTitle: 'Создать проект',
+    roles: ['sales', 'admin'],
+  },
+  {
+    path: routePaths.sales.editProject,
+    component: CreateProject,
+    pageTitle: 'Редактировать проект',
     roles: ['sales', 'admin'],
   },
   {

@@ -24,6 +24,7 @@ module.exports = {
   },
   parser: 'babel-eslint',
   rules: {
+    'linebreak-style': 0,
     'react/display-name': 'off',
     'react/no-unescaped-entities': 'off',
 

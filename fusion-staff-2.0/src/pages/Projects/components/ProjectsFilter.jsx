@@ -10,26 +10,48 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Collapse from '@material-ui/core/Collapse';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import InputLabel from '@material-ui/core/InputLabel';
-import Modal from '@material-ui/core/Modal';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
+// import Modal from '@material-ui/core/Modal';
+// import Typography from '@material-ui/core/Typography';
+// import Box from '@material-ui/core/Box';
+// import {
+//   Tabs,
+//   Tab,
+// } from '@material-ui/core';
 
 import SelectWrapper from 'ui/components/SelectWrapper';
 import { CustomStyles } from 'ui/components/CustomSelectComponents';
-
 import { getFullName } from 'utils/utils';
-import { clearFilter, updateFilterField, updateSearch } from '../store/reducer';
+import { clearFilter,
+  updateFilterField,
+  updateSearch,
+  // setGroupsTech,
+} from '../store/reducer';
+
+import TechModal from './TechModal';
 
 const ProjectsFilter = () => {
   const history = useHistory();
   const [showFilters, setShowFilters] = useState(true);
   const projects = useSelector((store) => store.projects);
   const { usersList, technologies } = useSelector((store) => store.enums);
+
   const dispatch = useDispatch();
 
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [openModal, setOpenModal] = useState(false);
+  const toggleTechModal = () => setOpenModal((prev) => !prev);
+  // const handleCloseTechModal = () => setOpen(false);
+
+  // const [collapseTech, setCollapse] = useState(false);
+  // const toggleCollapse = () => setCollapse((prev) => !prev);
+
+  // const [tabIndex, setTabIndex] = useState(0);
+  // const onTabIndexChange = (ev, tabIndex) => {
+  //   setTabIndex(tabIndex);
+  // };
+
+  // const [editedId, setEditedId] = useState(null);
+
+  // const [groups, setGroups] = useState();
 
   useEffect(() => {
     if (projects.filters.user && typeof projects.filters.user[0] === 'number') {
@@ -45,7 +67,7 @@ const ProjectsFilter = () => {
       const payload = { name: 'technologies', value: technologiesFilter };
       dispatch(updateFilterField(payload));
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const options = useMemo(
@@ -99,10 +121,6 @@ const ProjectsFilter = () => {
     history.push('create-project');
   };
 
-  // const handleTechnology = () => {
-
-  // }
-
   return (
     <>
       <div className='containerFilter' >
@@ -126,25 +144,19 @@ const ProjectsFilter = () => {
           <Button
             variant="contained"
             color="primary"
-            onClick={handleOpen}
+            onClick={toggleTechModal}
             fullWidth
           >
             Технологии
           </Button>
         </div>
       </div>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box className='modalTechnologies' sx={style} >
-          <Typography id="modal-modal-title" variant="h1" component="h2">
-            Технологии
-          </Typography>
-        </Box>
-      </Modal>
+      <TechModal
+        open={openModal}
+        onClose={toggleTechModal}
+        // aria-labelledby="modal-modal-title"
+        // aria-describedby="modal-modal-description"
+      />
 
       <Collapse in={showFilters}>
         <Grid
@@ -199,7 +211,7 @@ const ProjectsFilter = () => {
             </SelectWrapper>
           </Grid>
 
-          <Grid container justify='flex-end' className='buttonClearFilter'>
+          <Grid container className='buttonClearFilter'>
             <Grid item xs={12} md={6} lg={3}>
               <Button
                 disabled={!isEnabled}
@@ -215,18 +227,6 @@ const ProjectsFilter = () => {
       </Collapse>
     </>
   );
-};
-
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
 };
 
 export default ProjectsFilter;

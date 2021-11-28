@@ -11,6 +11,7 @@ module.exports = (router) => {
 
   router.post('/', validationMiddlewhare(validator.create), controller.create);
   router.get('/', validationMiddlewhare(validator.getList), controller.getList);
-  router.delete('/', validationMiddlewhare(validator.getList), controller.deleteProject);
-  router.put('/', validationMiddlewhare(validator.getList), controller.edit);
+  router.delete('/', controller.deleteProject);
+  router.put('/', validationMiddlewhare(validator.create), controller.edit);
+  router.get('/tech', controller.getTech);
 };

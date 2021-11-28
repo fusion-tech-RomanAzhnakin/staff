@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import Select from 'react-select';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleLoader } from 'store/main';
 import { toast } from 'react-toastify';
@@ -11,9 +11,11 @@ import SelectWrapper from 'ui/components/SelectWrapper';
 import { CustomStyles } from 'ui/components/CustomSelectComponents';
 import RichTextBox from 'ui/components/RichTextBox';
 import InputLabel from '@material-ui/core/InputLabel';
-import { Button, TextField, Grid } from '@material-ui/core';
+import { Button, TextField, Grid, InputAdornment, IconButton } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 import { defaultErrorMessage, requiredErrorMessage } from 'utils/constants';
+import { getFullName } from 'utils/utils';
 import projectApi from 'api/projectApi';
 import CreateProjectStyleWrapper from './CreateProject.style';
 
@@ -23,19 +25,38 @@ const validation = yupObject().shape({
 });
 
 const CreateProject = () => {
+  const location = useLocation();
   const { technologies, usersList } = useSelector((state) => state.enums);
   const dispatch = useDispatch();
   const history = useHistory();
+  const { projectsList } = useSelector((state) => state.projects);
 
   const convertDataToSubmit = (values) => {
+    const roles = [...values.role];
+    if (roles[roles.length - 1].title === '' && roles[roles.length - 1].text === '') {
+      roles.splice(roles.length - 1, 1);
+    }
     return {
       ...values,
-      role: values.role && values.role.map((role) => JSON.stringify(role)),
+      role: (roles) ? JSON.stringify(roles) : [],
       user_id: values.user_id && values.user_id.map((user) => user.id),
       technologies_id:
         values.technologies_id &&
         values.technologies_id.map((technologies) => technologies.id),
     };
+  };
+
+  const getTechnologies = () => {
+    const result = projectsList[location.state].technologies.map((item) => {
+      return (
+        { label: item.title, id: item.id });
+    });
+    return result;
+  };
+
+  const getUsers = () => {
+    const arrUsers = projectsList[location.state].user.map((item) => { return { label: getFullName(item, 'full', 'eng'), id: item.id }; });
+    return arrUsers;
   };
 
   const {
@@ -49,18 +70,20 @@ const CreateProject = () => {
     setFieldValue,
   } = useFormik({
     initialValues: {
-      title: '',
-      href: '',
-      description: '',
-      description_ru: '',
-      role: [
-        {
-          title: '',
-          text: '',
-        },
-      ],
-      technologies_id: [],
-      user_id: [],
+      title: (typeof location.state === 'number') ? projectsList[location.state].title : '',
+      href: (typeof location.state === 'number') ? projectsList[location.state].href : '',
+      description: (typeof location.state === 'number') ? projectsList[location.state].description : '',
+      description_ru: (typeof location.state === 'number') ? projectsList[location.state].description_ru : '',
+      role: (typeof location.state === 'number' && projectsList[location.state].role)
+        ? projectsList[location.state].role
+        : [
+          {
+            title: '',
+            text: '',
+          },
+        ],
+      technologies_id: (typeof location.state === 'number') ? getTechnologies() : [],
+      user_id: (typeof location.state === 'number') ? getUsers() : [],
       images: [],
     },
     validationSchema: validation,
@@ -68,8 +91,14 @@ const CreateProject = () => {
       try {
         const dataToSubmit = convertDataToSubmit(values);
         dispatch(toggleLoader(true));
-        await projectApi.create(dataToSubmit);
-        toast.success('Успех! Проект добавлен');
+        if (typeof location.state !== 'number') {
+          await projectApi.create(dataToSubmit);
+          toast.success('Успех! Проект добавлен');
+        } else {
+          dataToSubmit.id = projectsList[location.state].id;
+          await projectApi.edit(dataToSubmit);
+          toast.success('Успех! Проект отредактирован');
+        }
         history.goBack();
       } catch (err) {
         toast.error(defaultErrorMessage);
@@ -104,11 +133,23 @@ const CreateProject = () => {
     handleChange({ target: { value, name: data.name } });
   };
 
-  const addRoleFields = () => {
+  const handleAddRole = () => {
     const lenRolesArray = values.role.length;
+    if (lenRolesArray === 0) {
+      setFieldValue('role', [{ title: '', text: '' }]);
+      return;
+    }
     if (values.role[lenRolesArray - 1].title !== '') {
       setFieldValue('role', [...values.role, { title: '', text: '' }]);
     }
+  };
+
+  const handleDeleteRole = (index) => {
+    // if (values.role.length > 0) {
+    const roles = [...values.role];
+    roles.splice(index, 1);
+    setFieldValue('role', [...roles, { title: '', text: '' }]);
+    // }
   };
 
   return (
@@ -156,12 +197,24 @@ const CreateProject = () => {
                   name={`role[${index}].title`}
                   label="Роль"
                   onChange={handleChange}
+                  InputProps={{
+                    endAdornment: <InputAdornment position="end">
+                      <IconButton
+                        color="primary"
+                        size="small"
+                        onClick={() => handleDeleteRole(index)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </InputAdornment>
+                    ,
+                  }}
                 />
                 <InputLabel>Описание роли:</InputLabel>
               </RichTextBox>
             ))}
           <Grid className="create-project__roles__add-button-container">
-            <Button variant="contained" color="primary" onClick={addRoleFields}>
+            <Button variant="contained" color="primary" onClick={handleAddRole}>
               Добавить роль
             </Button>
           </Grid>
@@ -175,6 +228,7 @@ const CreateProject = () => {
             >
               <Grid item >
                 <Select
+                  value={values[select.name]}
                   placeholder={select.placeholder}
                   // hideSelectedOptions={false}
                   classNamePrefix="select"
@@ -194,7 +248,7 @@ const CreateProject = () => {
         <Grid container className="create-project__selects">
           <Grid item className="form-input-item select-wrapper">
             <Button variant="contained" color="primary" fullWidth type="submit">
-              Добавить проект
+              Сохранить проект
             </Button>
           </Grid>
 
